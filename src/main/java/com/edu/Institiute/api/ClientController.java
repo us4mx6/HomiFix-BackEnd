@@ -30,4 +30,17 @@ public class ClientController {
         );
     }
 
+    @PutMapping("{clientId}")
+    public ResponseEntity<StandardResponse> updateCourse(@RequestBody RequestRegistryDto data, @PathVariable String clientId){
+        CommonResponseDto responseData = clientService.updateClient(data,clientId);
+        return new ResponseEntity<>(
+                new StandardResponse(
+                        responseData.getCode(),
+                        responseData.getMessage(),
+                        responseData.getData()
+                ),
+                HttpStatus.CREATED
+        );
+    }
+
 }

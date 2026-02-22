@@ -33,21 +33,26 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(HttpSecurity http)throws Exception{
+    http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-//                .antMatchers("/api/v1/user_sign_up",
-//                        "/authenticate" ,"/api/v1/student/**",
-//                        "/api/v1/status/**","/api/v1/course/**","/api/v1/qualification/**",
-//                        "/api/v1/student_has_course/**", "/api/v1/teacher/**",
-//                        "/api/v1/module/**","/api/v1/privilege/**","/api/v1/role/**").permitAll()
-                .antMatchers(HttpHeaders.ALLOW).permitAll()
+                .antMatchers(
+                        "/api/v1/user_sign_up",
+                        "/authenticate"
+                ).permitAll()
+
                 .anyRequest().authenticated()
                 .and()
-                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(
+                jwtRequestFilter,
+                UsernamePasswordAuthenticationFilter.class
+        );
     }
 
     @Bean

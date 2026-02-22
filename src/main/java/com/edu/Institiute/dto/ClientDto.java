@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class ClientDto {
 
-    private String clientId;
+    private String id;
     private String homeAddress;
     private String preferredContactMethod;
     private String emergencyContactName;

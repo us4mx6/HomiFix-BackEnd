@@ -12,7 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class ClientResponseDto {
 
-    private String clientId;
+    private String id;
     private String homeAddress;
     private String preferredContactMethod;
     private String emergencyContactName;

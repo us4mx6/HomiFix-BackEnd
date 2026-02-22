@@ -1,8 +1,11 @@
 package com.edu.Institiute.service.impl;
 
+import com.edu.Institiute.config.SecurityUtil;
 import com.edu.Institiute.dto.ClientDto;
 import com.edu.Institiute.dto.requestDto.RequestRegistryDto;
 import com.edu.Institiute.dto.responseDto.CommonResponseDto;
+import com.edu.Institiute.entity.Client;
+import com.edu.Institiute.entity.Course;
 import com.edu.Institiute.entity.Status;
 import com.edu.Institiute.exception.EntryNotFoundException;
 import com.edu.Institiute.repo.ClientRepo;
@@ -44,6 +47,8 @@ public class ClientRegistryImpl implements ClientService {
         try {
             String clientCode = generator.generateFourNumbers();
             Optional<Status> status = statusRepo.findStatusById(dto.getStatus());
+            String loggedUser = SecurityUtil.getLoggedUser();
+            String createdBy = (loggedUser != null) ? loggedUser : dto.getCreatedBy();
 
             ClientDto clientDto = new ClientDto(
                     clientCode,
@@ -51,16 +56,38 @@ public class ClientRegistryImpl implements ClientService {
                     dto.getPreferredContactMethod(),
                     dto.getEmergencyContactName(),
                     dto.getEmergencyContactPhone(),
-                    dto.getCreatedBy(),
+                    createdBy,
                     new Date(),
                     "",
-                    new Date(),
+                    null,
                     statusMapper.toStatusDto(status.get())
 
             );
             clientRepo.save(clientMapper.dtoToClientEntity(clientDto));
 
-            return new CommonResponseDto(201, "Client  saved!", clientDto.getClientId(), new ArrayList<>());
+            return new CommonResponseDto(201, "Client  saved!", clientDto.getId(), new ArrayList<>());
+        }catch (Exception e){
+            throw new EntryNotFoundException("Can't Save because of this Error -->  " + e);
+        }
+    }
+
+    @Override
+    public CommonResponseDto updateClient(RequestRegistryDto dto, String clientId) {
+        try {
+            String loggedUser = SecurityUtil.getLoggedUser();
+            String modifyBy = (loggedUser != null) ? loggedUser : dto.getCreatedBy();
+
+            Client allClientForProvidedId = clientRepo.getAllClientForProvidedId(clientId);
+            allClientForProvidedId.setHomeAddress(dto.getHomeAddress());
+            allClientForProvidedId.setPreferredContactMethod(dto.getPreferredContactMethod());
+            allClientForProvidedId.setEmergencyContactName(dto.getEmergencyContactName());
+            allClientForProvidedId.setEmergencyContactPhone(dto.getEmergencyContactPhone());
+            allClientForProvidedId.setModifyBy(modifyBy);
+            allClientForProvidedId.setModifyDate(new Date());
+
+
+            clientRepo.save(allClientForProvidedId);
+            return new CommonResponseDto(201, "Client Updated!", allClientForProvidedId.getId(), new ArrayList<>());
         }catch (Exception e){
             throw new EntryNotFoundException("Can't Save because of this Error -->  " + e);
         }

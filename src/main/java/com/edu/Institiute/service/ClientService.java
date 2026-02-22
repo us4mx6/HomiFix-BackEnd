@@ -5,4 +5,5 @@ import com.edu.Institiute.dto.responseDto.CommonResponseDto;
 
 public interface ClientService {
     CommonResponseDto saveClient(RequestRegistryDto dto);
+    CommonResponseDto updateClient(RequestRegistryDto dto, String clientId);
 }
