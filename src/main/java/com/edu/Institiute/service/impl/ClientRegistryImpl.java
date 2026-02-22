@@ -1,8 +1,12 @@
 package com.edu.Institiute.service.impl;
 
+import com.edu.Institiute.config.SecurityUtil;
 import com.edu.Institiute.dto.ClientDto;
 import com.edu.Institiute.dto.requestDto.RequestRegistryDto;
+import com.edu.Institiute.dto.responseDto.ClientResponseDto;
 import com.edu.Institiute.dto.responseDto.CommonResponseDto;
+import com.edu.Institiute.dto.responseDto.paginated.PaginatedResponseClientDto;
+import com.edu.Institiute.entity.Client;
 import com.edu.Institiute.entity.Status;
 import com.edu.Institiute.exception.EntryNotFoundException;
 import com.edu.Institiute.repo.ClientRepo;
@@ -15,8 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,6 +50,8 @@ public class ClientRegistryImpl implements ClientService {
         try {
             String clientCode = generator.generateFourNumbers();
             Optional<Status> status = statusRepo.findStatusById(dto.getStatus());
+            String loggedUser = SecurityUtil.getLoggedUser();
+            String createdBy = (loggedUser != null) ? loggedUser : dto.getCreatedBy();
 
             ClientDto clientDto = new ClientDto(
                     clientCode,
@@ -51,18 +59,115 @@ public class ClientRegistryImpl implements ClientService {
                     dto.getPreferredContactMethod(),
                     dto.getEmergencyContactName(),
                     dto.getEmergencyContactPhone(),
-                    dto.getCreatedBy(),
+                    createdBy,
                     new Date(),
                     "",
-                    new Date(),
+                    null,
                     statusMapper.toStatusDto(status.get())
 
             );
             clientRepo.save(clientMapper.dtoToClientEntity(clientDto));
 
-            return new CommonResponseDto(201, "Client  saved!", clientDto.getClientId(), new ArrayList<>());
+            return new CommonResponseDto(201, "Client  saved!", clientDto.getId(), new ArrayList<>());
         }catch (Exception e){
             throw new EntryNotFoundException("Can't Save because of this Error -->  " + e);
+        }
+    }
+
+    @Override
+    public CommonResponseDto updateClient(RequestRegistryDto dto, String clientId) {
+        try {
+            String loggedUser = SecurityUtil.getLoggedUser();
+            String modifyBy = (loggedUser != null) ? loggedUser : dto.getCreatedBy();
+
+            Client allClientForProvidedId = clientRepo.getAllClientForProvidedId(clientId);
+            allClientForProvidedId.setHomeAddress(dto.getHomeAddress());
+            allClientForProvidedId.setPreferredContactMethod(dto.getPreferredContactMethod());
+            allClientForProvidedId.setEmergencyContactName(dto.getEmergencyContactName());
+            allClientForProvidedId.setEmergencyContactPhone(dto.getEmergencyContactPhone());
+            allClientForProvidedId.setModifyBy(modifyBy);
+            allClientForProvidedId.setModifyDate(new Date());
+
+
+            clientRepo.save(allClientForProvidedId);
+            return new CommonResponseDto(201, "Client Updated!", allClientForProvidedId.getId(), new ArrayList<>());
+        }catch (Exception e){
+            throw new EntryNotFoundException("Can't Save because of this Error -->  " + e);
+        }
+    }
+
+    @Override
+    public CommonResponseDto removeClient(String clientId) {
+
+        Optional<Client> clients = clientRepo.getAllClientById(clientId);
+
+        if (clients.isPresent()) {
+            clientRepo.delete(clients.get());
+            return new CommonResponseDto(201, "Client was deleted!", true, new ArrayList<>());
+        } else {
+            throw new EntryNotFoundException("Can't find any client...!");
+        }
+    }
+
+    @Override
+    public PaginatedResponseClientDto clientById(String clientId) throws SQLException {
+        try {
+            List<Client> allClients = clientRepo.getAllClient(clientId);
+            List<ClientResponseDto> clientResponseDto = new ArrayList<>();
+
+            for (Client r : allClients) {
+                clientResponseDto.add(
+                        new ClientResponseDto(
+                                r.getId(),
+                                r.getHomeAddress(),
+                                r.getPreferredContactMethod(),
+                                r.getEmergencyContactName(),
+                                r.getEmergencyContactPhone(),
+                                r.getCreatedBy(),
+                                r.getCreatedDate(),
+                                r.getModifyBy(),
+                                r.getModifyDate(),
+                                statusMapper.toStatusDto(r.getStatus())
+                        )
+                );
+            }
+            return new PaginatedResponseClientDto(
+                    clientRepo.clientCount(clientId),
+                    clientResponseDto
+            );
+        }catch (Exception e){
+            throw new EntryNotFoundException("Can't find any data for provided ID...!");
+        }
+    }
+
+    @Override
+    public PaginatedResponseClientDto allClients() throws SQLException {
+        try {
+            List<Client> allClients = clientRepo.findAll();
+            List<ClientResponseDto> clientResponseDto = new ArrayList<>();
+
+            for (Client r : allClients) {
+                clientResponseDto.add(
+                        new ClientResponseDto(
+                                r.getId(),
+                                r.getHomeAddress(),
+                                r.getPreferredContactMethod(),
+                                r.getEmergencyContactName(),
+                                r.getEmergencyContactPhone(),
+                                r.getCreatedBy(),
+                                r.getCreatedDate(),
+                                r.getModifyBy(),
+                                r.getModifyDate(),
+                                statusMapper.toStatusDto(r.getStatus())
+                        )
+                );
+            }
+            return new PaginatedResponseClientDto(
+                    clientRepo.count(),
+                    clientResponseDto
+            );
+        }catch (Exception e){
+            throw new EntryNotFoundException("Can't find any data...!");
         }
     }
 }
