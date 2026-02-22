@@ -9,6 +9,5 @@ import org.springframework.stereotype.Repository;
 @Mapper(componentModel = "spring")
 public interface ClientMapper {
     Client dtoToClientEntity(ClientDto clientDto);
-
     ClientDto toClientDto(Client client);
 }
