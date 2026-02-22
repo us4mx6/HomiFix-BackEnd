@@ -3,7 +3,6 @@ package com.edu.Institiute.service;
 import com.edu.Institiute.dto.requestDto.RequestRegistryDto;
 import com.edu.Institiute.dto.responseDto.CommonResponseDto;
 import com.edu.Institiute.dto.responseDto.paginated.PaginatedResponseClientDto;
-import com.edu.Institiute.dto.responseDto.paginated.PaginatedResponseCourseDto;
 
 import java.sql.SQLException;
 

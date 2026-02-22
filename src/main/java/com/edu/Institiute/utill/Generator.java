@@ -22,6 +22,15 @@ public class Generator {
         return randomInstanceId;
     }
 
+    public static Long generateFourLongNumbers() {
+        Long randomId = 0L;  // Initialize with 0 instead of null
+        for (int i = 0; i < 4; i++) {
+            int digit = (int) (Math.random() * 10);
+            randomId = randomId * 10 + digit;  // Build the number properly
+        }
+        return randomId;
+    }
+
 }
 
 

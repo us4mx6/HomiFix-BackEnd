@@ -2,7 +2,7 @@ package com.edu.Institiute.api;
 
 import com.edu.Institiute.dto.requestDto.RequestRegistryDto;
 import com.edu.Institiute.dto.responseDto.CommonResponseDto;
-import com.edu.Institiute.service.ClientService;
+import com.edu.Institiute.service.ServiceProfessionalService;
 import com.edu.Institiute.utill.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,16 +13,16 @@ import java.sql.SQLException;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/api/v1/client")
-public class ClientController {
+@RequestMapping("/api/v1/serviceProfessional")
+public class ServiceProfessionalController {
 
     @Autowired
-    private ClientService clientService;
+    private ServiceProfessionalService serviceProfessionalService;
 
     @CrossOrigin(origins = "http://localhost:4200/")
     @PostMapping
-    public ResponseEntity<StandardResponse> savedClient(@RequestBody RequestRegistryDto data){
-        CommonResponseDto responseData = clientService.saveClient(data);
+    public ResponseEntity<StandardResponse> savedServiceProfessional(@RequestBody RequestRegistryDto data){
+        CommonResponseDto responseData = serviceProfessionalService.saveServiceProfessional(data);
         return new ResponseEntity<>(
                 new StandardResponse(
                         responseData.getCode(),
@@ -34,9 +34,9 @@ public class ClientController {
     }
 
     @CrossOrigin(origins = "http://localhost:4200/")
-    @PutMapping("{clientId}")
-    public ResponseEntity<StandardResponse> updateClient(@RequestBody RequestRegistryDto data, @PathVariable String clientId){
-        CommonResponseDto responseData = clientService.updateClient(data,clientId);
+    @PutMapping("{serviceProfessionalId}")
+    public ResponseEntity<StandardResponse> updateServiceProfessional(@RequestBody RequestRegistryDto data, @PathVariable String serviceProfessionalId){
+        CommonResponseDto responseData = serviceProfessionalService.updateServiceProfessional(data,serviceProfessionalId);
         return new ResponseEntity<>(
                 new StandardResponse(
                         responseData.getCode(),
@@ -48,9 +48,9 @@ public class ClientController {
     }
 
     @CrossOrigin(origins = "http://localhost:4200/")
-    @DeleteMapping("{clientId}")
-    public ResponseEntity<StandardResponse> deleteClient(@PathVariable String clientId){
-        CommonResponseDto responseData = clientService.removeClient(clientId);
+    @DeleteMapping("{serviceProfessionalId}")
+    public ResponseEntity<StandardResponse> deleteServiceProfessional(@PathVariable String serviceProfessionalId){
+        CommonResponseDto responseData = serviceProfessionalService.removeServiceProfessional(serviceProfessionalId);
         return new ResponseEntity<>(
                 new StandardResponse(
                         responseData.getCode(),
@@ -62,13 +62,13 @@ public class ClientController {
     }
 
     @CrossOrigin(origins = "http://localhost:4200/")
-    @GetMapping("{clientId}")
-    public ResponseEntity<StandardResponse> getClient(@PathVariable String clientId)throws SQLException {
+    @GetMapping("{serviceProfessionalId}")
+    public ResponseEntity<StandardResponse> getServiceProfessional(@PathVariable String serviceProfessionalId)throws SQLException {
         return new ResponseEntity<>(
                 new StandardResponse(
                         200,
-                        "Client List",
-                        clientService.clientById(clientId)),
+                        "Service Professional List",
+                        serviceProfessionalService.serviceProfessionalById(serviceProfessionalId)),
                 HttpStatus.OK
         );
     }
@@ -76,14 +76,13 @@ public class ClientController {
 
     @CrossOrigin(origins = "http://localhost:4200/")
     @GetMapping
-    public ResponseEntity<StandardResponse> getAllClient()throws SQLException{
+    public ResponseEntity<StandardResponse> getAllServiceProfessional()throws SQLException{
         return new ResponseEntity<>(
                 new StandardResponse(
                         200,
-                        "Client List",
-                        clientService.allClients()),
+                        "All Service Professional List",
+                        serviceProfessionalService.allServiceProfessional()),
                 HttpStatus.OK
         );
     }
-
 }
