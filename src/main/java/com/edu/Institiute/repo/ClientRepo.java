@@ -6,9 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ClientRepo extends JpaRepository<Client,Integer> {
 
     @Query(value = "SELECT * FROM client WHERE id=:clientId", nativeQuery = true)
     Client getAllClientForProvidedId(@Param("clientId") String clientId);
+
+    @Query(value = "SELECT * FROM client WHERE id=:clientId", nativeQuery = true)
+    Optional<Client> getAllClientById(@Param("clientId") String clientId);
 }

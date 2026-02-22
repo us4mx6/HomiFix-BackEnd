@@ -43,4 +43,17 @@ public class ClientController {
         );
     }
 
+    @DeleteMapping("{clientId}")
+    public ResponseEntity<StandardResponse> deleteCourse(@PathVariable String clientId){
+        CommonResponseDto responseData = clientService.removeClient(clientId);
+        return new ResponseEntity<>(
+                new StandardResponse(
+                        responseData.getCode(),
+                        responseData.getMessage(),
+                        responseData.getData()
+                ),
+                HttpStatus.CREATED
+        );
+    }
+
 }

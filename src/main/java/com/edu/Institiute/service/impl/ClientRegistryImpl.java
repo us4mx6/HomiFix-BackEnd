@@ -7,6 +7,7 @@ import com.edu.Institiute.dto.responseDto.CommonResponseDto;
 import com.edu.Institiute.entity.Client;
 import com.edu.Institiute.entity.Course;
 import com.edu.Institiute.entity.Status;
+import com.edu.Institiute.entity.StudentHasCourse;
 import com.edu.Institiute.exception.EntryNotFoundException;
 import com.edu.Institiute.repo.ClientRepo;
 import com.edu.Institiute.repo.StatusRepo;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -90,6 +92,19 @@ public class ClientRegistryImpl implements ClientService {
             return new CommonResponseDto(201, "Client Updated!", allClientForProvidedId.getId(), new ArrayList<>());
         }catch (Exception e){
             throw new EntryNotFoundException("Can't Save because of this Error -->  " + e);
+        }
+    }
+
+    @Override
+    public CommonResponseDto removeClient(String clientId) {
+
+        Optional<Client> clients = clientRepo.getAllClientById(clientId);
+
+        if (clients.isPresent()) {
+            clientRepo.delete(clients.get());
+            return new CommonResponseDto(201, "Client was deleted!", true, new ArrayList<>());
+        } else {
+            throw new EntryNotFoundException("Can't find any client...!");
         }
     }
 }
