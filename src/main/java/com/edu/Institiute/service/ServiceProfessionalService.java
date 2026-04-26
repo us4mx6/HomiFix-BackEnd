@@ -8,8 +8,9 @@ import java.sql.SQLException;
 
 public interface ServiceProfessionalService {
     CommonResponseDto saveServiceProfessional(RequestRegistryDto dto);
-    CommonResponseDto updateServiceProfessional(RequestRegistryDto dto, String serviceProfessionalId);
-    CommonResponseDto removeServiceProfessional(String serviceProfessionalId);
-    PaginatedResponseProfessionalDto serviceProfessionalById(String serviceProfessionalId) throws SQLException;
+    CommonResponseDto updateServiceProfessional(RequestRegistryDto dto, Long professionalId);
+    CommonResponseDto removeServiceProfessional(Long professionalId);
+    PaginatedResponseProfessionalDto serviceProfessionalById(Long professionalId) throws SQLException;
+
     PaginatedResponseProfessionalDto allServiceProfessional() throws SQLException;
 }

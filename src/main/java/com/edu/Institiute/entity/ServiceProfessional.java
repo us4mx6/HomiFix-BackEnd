@@ -18,6 +18,7 @@ public class ServiceProfessional {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "professional_id")
     private Long professionalId;
 
     @Column(name="businessName")

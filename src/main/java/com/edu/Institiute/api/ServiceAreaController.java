@@ -2,7 +2,7 @@ package com.edu.Institiute.api;
 
 import com.edu.Institiute.dto.requestDto.RequestRegistryDto;
 import com.edu.Institiute.dto.responseDto.CommonResponseDto;
-import com.edu.Institiute.service.ServiceProfessionalService;
+import com.edu.Institiute.service.ServiceAreaService;
 import com.edu.Institiute.utill.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,16 +13,31 @@ import java.sql.SQLException;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/api/v1/serviceProfessional")
-public class ServiceProfessionalController {
+@RequestMapping("/api/v1/serviceArea")
+public class ServiceAreaController {
 
     @Autowired
-    private ServiceProfessionalService serviceProfessionalService;
+    private ServiceAreaService serviceAreaService;
 
     @CrossOrigin(origins = "http://localhost:4200/")
     @PostMapping
-    public ResponseEntity<StandardResponse> savedServiceProfessional(@RequestBody RequestRegistryDto data){
-        CommonResponseDto responseData = serviceProfessionalService.saveServiceProfessional(data);
+    public ResponseEntity<StandardResponse> savedServiceArea(@RequestBody RequestRegistryDto data){
+        CommonResponseDto responseData = serviceAreaService.saveServiceArea(data);
+        return new ResponseEntity<>(
+                new StandardResponse(
+                        responseData.getCode(),
+                        responseData.getMessage(),
+                        responseData.getData()
+                ),
+                HttpStatus.CREATED
+        );
+    }
+
+
+    @CrossOrigin(origins = "http://localhost:4200/")
+    @PutMapping("{serviceAreaId}")
+    public ResponseEntity<StandardResponse> updateServiceArea(@RequestBody RequestRegistryDto data, @PathVariable String serviceAreaId){
+        CommonResponseDto responseData = serviceAreaService.updateServiceArea(data,serviceAreaId);
         return new ResponseEntity<>(
                 new StandardResponse(
                         responseData.getCode(),
@@ -34,9 +49,9 @@ public class ServiceProfessionalController {
     }
 
     @CrossOrigin(origins = "http://localhost:4200/")
-    @PutMapping("{professionalId}")
-    public ResponseEntity<StandardResponse> updateServiceProfessional(@RequestBody RequestRegistryDto data, @PathVariable Long professionalId){
-        CommonResponseDto responseData = serviceProfessionalService.updateServiceProfessional(data,professionalId);
+    @DeleteMapping("{serviceAreaId}")
+    public ResponseEntity<StandardResponse> deleteServiceArea(@PathVariable String serviceAreaId){
+        CommonResponseDto responseData =serviceAreaService.removeServiceArea(serviceAreaId);
         return new ResponseEntity<>(
                 new StandardResponse(
                         responseData.getCode(),
@@ -46,43 +61,28 @@ public class ServiceProfessionalController {
                 HttpStatus.CREATED
         );
     }
-
     @CrossOrigin(origins = "http://localhost:4200/")
-    @DeleteMapping("{professionalId}")
-    public ResponseEntity<StandardResponse> deleteServiceProfessional(@PathVariable Long professionalId){
-        CommonResponseDto responseData = serviceProfessionalService.removeServiceProfessional(professionalId);
-        return new ResponseEntity<>(
-                new StandardResponse(
-                        responseData.getCode(),
-                        responseData.getMessage(),
-                        responseData.getData()
-                ),
-                HttpStatus.CREATED
-        );
-    }
-
-    @CrossOrigin(origins = "http://localhost:4200/")
-    @GetMapping("{professionalId}")
-    public ResponseEntity<StandardResponse> getServiceProfessional(@PathVariable Long professionalId)throws SQLException {
+    @GetMapping("{serviceAreaId}")
+    public ResponseEntity<StandardResponse> getServiceArea(@PathVariable String serviceAreaId)throws SQLException {
         return new ResponseEntity<>(
                 new StandardResponse(
                         200,
-                        "Service Professional List",
-                        serviceProfessionalService.serviceProfessionalById(professionalId)),
+                        "serviceArea List",
+                        serviceAreaService.serviceAreaById(serviceAreaId)),
                 HttpStatus.OK
         );
     }
-
 
     @CrossOrigin(origins = "http://localhost:4200/")
     @GetMapping
-    public ResponseEntity<StandardResponse> getAllServiceProfessional()throws SQLException{
+    public ResponseEntity<StandardResponse> getAllServiceArea()throws SQLException{
         return new ResponseEntity<>(
                 new StandardResponse(
                         200,
-                        "All Service Professional List",
-                        serviceProfessionalService.allServiceProfessional()),
+                        "Client List",
+                        serviceAreaService.allServiceAreas()),
                 HttpStatus.OK
         );
     }
+
 }

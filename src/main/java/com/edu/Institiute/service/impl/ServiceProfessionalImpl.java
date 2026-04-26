@@ -27,7 +27,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class ServiceProfessionalServiceImpl implements ServiceProfessionalService {
+public class ServiceProfessionalImpl implements ServiceProfessionalService {
 
     @Autowired
     private Generator generator;
@@ -48,13 +48,13 @@ public class ServiceProfessionalServiceImpl implements ServiceProfessionalServic
     public CommonResponseDto saveServiceProfessional(RequestRegistryDto dto) {
 
         try {
-            Long serviceProfessionalCode = generator.generateFourLongNumbers();
+            Long professionalId = generator.generateFourLongNumbers();
             Optional<Status> status = statusRepo.findStatusById(dto.getStatus());
             String loggedUser = SecurityUtil.getLoggedUser();
             String createdBy = (loggedUser != null) ? loggedUser : dto.getCreatedBy();
 
             ServiceProfessionalDto serviceProfessionalDto = new ServiceProfessionalDto(
-                    serviceProfessionalCode,
+                    professionalId,
                     dto.getBusinessName(),
                     dto.getBusinessRegistrationNumber(),
                     dto.getBusinessAddress(),
@@ -82,13 +82,13 @@ public class ServiceProfessionalServiceImpl implements ServiceProfessionalServic
     }
 
     @Override
-    public CommonResponseDto updateServiceProfessional(RequestRegistryDto dto, String serviceProfessionalId) {
+    public CommonResponseDto updateServiceProfessional(RequestRegistryDto dto, Long professionalId) {
         try {
 
             String loggedUser = SecurityUtil.getLoggedUser();
             String modifyBy = (loggedUser != null) ? loggedUser : dto.getCreatedBy();
 
-            ServiceProfessional allServiceProfessional = serviceProfessionalRepo.getAllServiceProfessionals(serviceProfessionalId);
+            ServiceProfessional allServiceProfessional = serviceProfessionalRepo.getServiceProfessionalByProvidedId(professionalId);
             allServiceProfessional.setBusinessName(dto.getBusinessName());
             allServiceProfessional.setBusinessRegistrationNumber(dto.getBusinessRegistrationNumber());
             allServiceProfessional.setBusinessAddress(dto.getBusinessAddress());
@@ -111,8 +111,8 @@ public class ServiceProfessionalServiceImpl implements ServiceProfessionalServic
     }
 
     @Override
-    public CommonResponseDto removeServiceProfessional(String serviceProfessionalId) {
-        Optional<ServiceProfessional> serviceProfessional = serviceProfessionalRepo.getAllServiceProfessionalById(serviceProfessionalId);
+    public CommonResponseDto removeServiceProfessional( Long professionalId) {
+        Optional<ServiceProfessional> serviceProfessional = serviceProfessionalRepo.findByServiceProfessionalId(professionalId);
 
         if (serviceProfessional.isPresent()) {
             serviceProfessionalRepo.delete(serviceProfessional.get());
@@ -123,9 +123,9 @@ public class ServiceProfessionalServiceImpl implements ServiceProfessionalServic
     }
 
     @Override
-    public PaginatedResponseProfessionalDto serviceProfessionalById(String serviceProfessionalId) throws SQLException {
+    public PaginatedResponseProfessionalDto serviceProfessionalById( Long professionalId) throws SQLException {
         try {
-            List<ServiceProfessional> serviceProfessionals = serviceProfessionalRepo.getAllServiceProfessional(serviceProfessionalId);
+            List<ServiceProfessional> serviceProfessionals = serviceProfessionalRepo.getAllServiceProfessionalById(professionalId);
             List<ServiceProfessionalResponseDto> serviceProfessionalDto = new ArrayList<>();
 
             for (ServiceProfessional r : serviceProfessionals) {
@@ -163,10 +163,10 @@ public class ServiceProfessionalServiceImpl implements ServiceProfessionalServic
     @Override
     public PaginatedResponseProfessionalDto allServiceProfessional() throws SQLException {
         try {
-            List<ServiceProfessional> serviceProfessionals = serviceProfessionalRepo.findAll();
+            List<ServiceProfessional> allServiceProfessionals = serviceProfessionalRepo.getAllServiceProfessional();
             List<ServiceProfessionalResponseDto> serviceProfessionalDto = new ArrayList<>();
 
-            for (ServiceProfessional r : serviceProfessionals) {
+            for (ServiceProfessional r : allServiceProfessionals) {
                 serviceProfessionalDto.add(
                         new ServiceProfessionalResponseDto(
                                 r.getProfessionalId(),

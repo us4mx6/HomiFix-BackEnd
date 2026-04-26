@@ -4,6 +4,7 @@ import com.edu.Institiute.dto.StatusDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import software.amazon.ion.Decimal;
 
 import java.util.Date;
 
@@ -43,4 +44,12 @@ public class RequestRegistryDto {
     private Integer totalJobsCompleted;
     private Long responseRate;
     private String avgResponseTime;
+
+    //ServiceArea
+    private Long professionalId;
+    private String city;
+    private String state;
+    private String zipCode;
+    private Integer maxDistance;
+    private Decimal travelFee;
 }

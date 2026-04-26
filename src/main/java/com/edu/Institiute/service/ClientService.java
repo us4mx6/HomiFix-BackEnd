@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 public interface ClientService {
     CommonResponseDto saveClient(RequestRegistryDto dto);
+
     CommonResponseDto updateClient(RequestRegistryDto dto, String clientId);
 
     CommonResponseDto removeClient(String clientId);
