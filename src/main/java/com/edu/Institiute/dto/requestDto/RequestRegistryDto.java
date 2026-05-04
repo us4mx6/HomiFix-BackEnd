@@ -33,17 +33,17 @@ public class RequestRegistryDto {
     private Date modifyDate;
 
     //ServiceProfessional
-    private String businessName;
-    private String businessRegistrationNumber;
-    private String businessAddress;
-    private String description;
-    private String yearsOfExperience;
-    private Boolean isVerified;
-    private Date verificationDate;
-    private Long overallRating;
-    private Integer totalJobsCompleted;
-    private Long responseRate;
-    private String avgResponseTime;
+//    private String businessName;
+//    private String businessRegistrationNumber;
+//    private String businessAddress;
+//    private String description;
+//    private String yearsOfExperience;
+//    private Boolean isVerified;
+//    private Date verificationDate;
+//    private Long overallRating;
+//    private Integer totalJobsCompleted;
+//    private Long responseRate;
+//    private String avgResponseTime;
 
     //ServiceArea
     private Long professionalId;
