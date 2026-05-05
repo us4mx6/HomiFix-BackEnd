@@ -4,6 +4,7 @@ import com.edu.Institiute.dto.StatusDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import software.amazon.ion.Decimal;
 
 import java.util.Date;
 
@@ -32,15 +33,23 @@ public class RequestRegistryDto {
     private Date modifyDate;
 
     //ServiceProfessional
-    private String businessName;
-    private String businessRegistrationNumber;
-    private String businessAddress;
-    private String description;
-    private String yearsOfExperience;
-    private Boolean isVerified;
-    private Date verificationDate;
-    private Long overallRating;
-    private Integer totalJobsCompleted;
-    private Long responseRate;
-    private String avgResponseTime;
+//    private String businessName;
+//    private String businessRegistrationNumber;
+//    private String businessAddress;
+//    private String description;
+//    private String yearsOfExperience;
+//    private Boolean isVerified;
+//    private Date verificationDate;
+//    private Long overallRating;
+//    private Integer totalJobsCompleted;
+//    private Long responseRate;
+//    private String avgResponseTime;
+
+    //ServiceArea
+    private Long professionalId;
+    private String city;
+    private String state;
+    private String zipCode;
+    private Integer maxDistance;
+    private Decimal travelFee;
 }
