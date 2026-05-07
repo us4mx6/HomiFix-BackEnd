@@ -3,7 +3,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import software.amazon.ion.Decimal;
+import java.math.BigDecimal;
 
 
 import javax.persistence.*;
@@ -18,7 +18,7 @@ import java.util.Date;
 public class ServiceArea {
 
     @Id
-    @Column(name="id")
+    @Column(name="id", length = 100)
     private String id;
 
     @Column(name="city")
@@ -34,7 +34,7 @@ public class ServiceArea {
     private Integer maxDistance;
 
     @Column(name="travelFee")
-    private Decimal travelFee;
+    private BigDecimal travelFee;
 
     @Column(name="createdBy")
     private String createdBy;
