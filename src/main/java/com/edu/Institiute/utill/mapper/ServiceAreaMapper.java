@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 @Mapper(componentModel = "spring")
 public interface ServiceAreaMapper {
     ServiceArea dtoToServiceAreaEntity(ServiceAreaDto serviceAreaDto);
-    ServiceAreaDto toServiceAreaDto( ServiceArea  ServiceArea);
+
 }

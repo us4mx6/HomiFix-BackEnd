@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import software.amazon.ion.Decimal;
 
+import java.math.BigDecimal;
 import java.util.Date;
 @Data
 @AllArgsConstructor
@@ -18,7 +19,7 @@ public class ServiceAreaResponseDto {
     private String state;
     private String zipCode;
     private Integer maxDistance;
-    private Decimal travelFee;
+    private BigDecimal travelFee;
     private String createdBy;
     private Date createdDate;
     private String modifyBy;
