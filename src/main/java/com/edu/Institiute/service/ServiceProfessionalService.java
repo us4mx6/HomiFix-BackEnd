@@ -11,6 +11,5 @@ public interface ServiceProfessionalService {
     CommonResponseDto updateServiceProfessional(RequestRegistryDto dto, Long professionalId);
     CommonResponseDto removeServiceProfessional(Long professionalId);
     PaginatedResponseProfessionalDto serviceProfessionalById(Long professionalId) throws SQLException;
-
     PaginatedResponseProfessionalDto allServiceProfessional() throws SQLException;
 }

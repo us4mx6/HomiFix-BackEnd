@@ -19,7 +19,6 @@ public class ServiceProfessionalController {
     @Autowired
     private ServiceProfessionalService serviceProfessionalService;
 
-    @CrossOrigin(origins = "http://localhost:4200/")
     @PostMapping
     public ResponseEntity<StandardResponse> savedServiceProfessional(@RequestBody RequestRegistryDto data){
         CommonResponseDto responseData = serviceProfessionalService.saveServiceProfessional(data);
