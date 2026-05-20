@@ -17,7 +17,6 @@ public class RequestRegistryDto {
     private String studentAge;
     private String studentNic;
     private Integer status;
-
     private String courseCode;
     private String courseName;
 

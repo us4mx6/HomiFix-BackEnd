@@ -61,6 +61,7 @@ public class ServiceAreaRegistryImpl implements ServiceAreaService {
     public CommonResponseDto saveServiceArea(RequestRegistryDto dto) {
 //
         try {
+            System.out.println("hello");
             String serviceAreaId = generator.generateFourNumbers();
             Optional<ServiceProfessional> serviceProfessional = serviceProfessionalRepo.findByServiceProfessionalId(dto.getProfessionalId());
             Optional<Status> status = statusRepo.findStatusById(dto.getStatus());
@@ -83,6 +84,7 @@ public class ServiceAreaRegistryImpl implements ServiceAreaService {
 
             );
             serviceAreaRepo.save(serviceAreaMapper.dtoToServiceAreaEntity(serviceAreaDto));
+            System.out.println("hello");
 
             return new CommonResponseDto(201, "Service Area  saved!", serviceAreaDto.getId(), new ArrayList<>());
         }catch (Exception e){
