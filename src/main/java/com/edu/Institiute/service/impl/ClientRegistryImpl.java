@@ -46,7 +46,7 @@ public class ClientRegistryImpl implements ClientService {
 
     @Override
     public CommonResponseDto saveClient(RequestRegistryDto dto) {
-//
+
         try {
             String clientCode = generator.generateFourNumbers();
             Optional<Status> status = statusRepo.findStatusById(dto.getStatus());

@@ -1,5 +1,7 @@
 package com.edu.Institiute.dto.requestDto;
 
+import com.edu.Institiute.dto.StatusDto;
+import com.edu.Institiute.entity.AdminRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -51,4 +53,8 @@ public class RequestRegistryDto {
     private String zipCode;
     private Integer maxDistance;
     private BigDecimal travelFee;
+
+    //AdminUser
+    private AdminRole role;
+    private String permissions;
 }
